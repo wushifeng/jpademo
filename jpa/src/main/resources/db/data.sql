@@ -1,0 +1,1 @@
+INSERT INTO demo_init VALUES(1, 'Hello');
