@@ -107,4 +107,13 @@ public class HomeController {
             return new ModelAndView("/user/personAdd", model.asMap());
         }
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login2() {
+        return "login";
+    }
+    @RequestMapping(value = "/source", method = RequestMethod.GET)
+    public String source() {
+        return "source";
+    }
 }
