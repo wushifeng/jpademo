@@ -31,5 +31,6 @@ resources 各类配置文件
         开发运行： mvn jetty:run -Dspring.profiles.active=test
         单元测试运行： mvn test -Dspring.profiles.active=test target\surefire-reports下有txt xml格式的
             mvn ## -P test 加载 profile不起作用
+            单元测试由 @ActiveProfiles("test") 控制，默认走的就是 test 类别的profile
         mvn surefire-report:report 生成HTML单元测试报告 target\site\surefire-report.html
         mvn site 查看项目的各种依赖信息
