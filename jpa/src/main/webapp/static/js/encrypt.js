@@ -1,35 +1,21 @@
 /**
- * Created by Answer on 16/6/29.
+ * Created by Answer on 16/7/1.
  */
-
-function initSourcePage() {
+function initEncryptPage() {
     initTable();
-    initDetailTable();
-    initSchemaTree();
+    initTable2();
+    initTree();
     initValidator();
-    $("#type").select2({
-        minimumResultsForSearch: Infinity,
-        data: [
-            {
-                id: 'value',
-                text: 'Text to display'
-            },
-            {
-                id: '2',
-                text: 'orcl'
-            }
-        ]
-    });
 }
 function initTable() {
-    $('#dataSourceTable').bootstrapTable({
+    $('#table').bootstrapTable({
         url: 'data_source_table.json',
         height: '300',
-        showRefresh: true,
+//            showRefresh: true,
         pagination: true,
         pageNumber: '1',
         sidePagination: 'client',
-        toolbar: '#dataSourceTableToolbar',
+//            toolbar: '#toolbar',
         singleSelect: true,
         clickToSelect: true,
         columns: [{
@@ -53,23 +39,19 @@ function initTable() {
             title: '端口',
             align: 'center'
         }, {
-            field: 'status',
-            title: '加密状态',
+            field: 'schema',
+            title: '实例',
             align: 'center'
-        }, {
-            field: 'isInterrupt',
-            title: '故障中断',
-            align: 'center'
-//                checkbox: true
         }]
     });
 }
-function initDetailTable() {
-    $('#detialTable').bootstrapTable({
+function initTable2() {
+    $('#table3').bootstrapTable({
         url: 'data_source_table.json',
 //            classes: 'table table-bordered',
         height: '300',
         sidePagination: 'client',
+        toolbar: '#toolbar2',
         columns: [{
             field: 'id',
             title: '名称',
@@ -82,11 +64,17 @@ function initDetailTable() {
             field: 'status',
             title: '状态',
             align: 'center'
+        }, {
+            field: 'algorithm',
+            title: '加密算法',
+            align: 'center'
         }]
     });
+
+
 }
-function initSchemaTree() {
-    $('#schemaTree').treeview({
+function initTree() {
+    $('#tree').treeview({
         color: "#428bca",
         nodeIcon: 'glyphicon glyphicon-bookmark',
         data: [
@@ -263,4 +251,31 @@ function initValidator() {
  */
 function authDBA() {
 
+}
+function showEncryptModal() {
+    $('#table2').bootstrapTable({
+        url: 'data_source_table.json',
+        classes: 'table table-no-bordered',
+        height: '250',
+        sidePagination: 'client',
+//            toolbar: '#toolbar2',
+        columns: [{
+            field: 'id',
+            title: '名称',
+            visible: false
+        }, {
+            field: 'alias',
+            title: '名称',
+            align: 'center'
+        }, {
+            field: 'status',
+            title: '状态',
+            align: 'center'
+        }, {
+            field: 'algorithm',
+            title: '加密算法',
+            align: 'center'
+        }]
+    });
+    $('#encryptModal').modal();
 }

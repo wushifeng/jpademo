@@ -3,10 +3,10 @@
 <sitemesh>
 
     <!--login页面不需要导航菜单-->
-    <mapping path="/login" decorator="/views/decorators/default-decorator.jsp"/>
+    <mapping path="/login" decorator="/WEB-INF/views/decorators/default-decorator.jsp"/>
 
-    <!-- 指明满足“/*”的页面，将被“/views/decorators/nav-decorator.jsp”所装饰 -->
-    <mapping path="/*" decorator="/views/decorators/nav-decorator.jsp"/>
+    <!-- 指明满足“/*”的页面，将被“/WEB-INF/views/decorators/nav-decorator.jsp”所装饰 -->
+    <mapping path="/*" decorator="/WEB-INF/views/decorators/nav-decorator.jsp"/>
 
     <!-- 指明满足“/exclude.jsp*”的页面，将被排除，不被装饰 -->
     <mapping path="/exclude.jsp*" exclue="true"/>

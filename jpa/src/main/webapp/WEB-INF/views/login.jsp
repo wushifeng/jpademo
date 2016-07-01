@@ -58,14 +58,11 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
-<script src="/static/js/master.js"></script>
 <script src="/static/js/login.js"></script>
 <script>
     $(document).ready(function () {
         initValidator();
     });
-
-
 </script>
 </body>
 </html>

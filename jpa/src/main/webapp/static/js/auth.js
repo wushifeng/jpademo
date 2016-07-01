@@ -1,35 +1,28 @@
 /**
- * Created by Answer on 16/6/29.
+ * Created by Answer on 16/7/1.
  */
-
-function initSourcePage() {
-    initTable();
-    initDetailTable();
+function initAuthPage() {
+    initDataSourceTable();
+    initUserTable();
     initSchemaTree();
     initValidator();
-    $("#type").select2({
-        minimumResultsForSearch: Infinity,
-        data: [
-            {
-                id: 'value',
-                text: 'Text to display'
-            },
-            {
-                id: '2',
-                text: 'orcl'
-            }
-        ]
+    $("#switch-offText").bootstrapSwitch({
+        size: 'mini',
+        onColor: 'primary',
+        offColor: 'danger',
+        onText: '启用',
+        offText: '停止'
     });
 }
-function initTable() {
+function initDataSourceTable() {
     $('#dataSourceTable').bootstrapTable({
         url: 'data_source_table.json',
         height: '300',
-        showRefresh: true,
+//            showRefresh: true,
         pagination: true,
         pageNumber: '1',
         sidePagination: 'client',
-        toolbar: '#dataSourceTableToolbar',
+//            toolbar: '#toolbar',
         singleSelect: true,
         clickToSelect: true,
         columns: [{
@@ -53,35 +46,53 @@ function initTable() {
             title: '端口',
             align: 'center'
         }, {
-            field: 'status',
-            title: '加密状态',
+            field: 'schema',
+            title: '实例',
             align: 'center'
-        }, {
-            field: 'isInterrupt',
-            title: '故障中断',
-            align: 'center'
-//                checkbox: true
         }]
     });
 }
-function initDetailTable() {
-    $('#detialTable').bootstrapTable({
+
+function initUserTable() {
+    $('#userTable').bootstrapTable({
         url: 'data_source_table.json',
-//            classes: 'table table-bordered',
-        height: '300',
+        classes: 'table table-no-bordered',
+        height: '200',
+//            showRefresh: true,
+//            pagination: true,
+//            pageNumber: '1',
         sidePagination: 'client',
+//            toolbar: '#toolbar',
+        singleSelect: true,
+        clickToSelect: true,
         columns: [{
             field: 'id',
-            title: '名称',
-            visible: false
+            title: '',
+            checkbox: true
         }, {
-            field: 'alias',
-            title: '名称',
+            field: 'name',
+            title: '用户名',
             align: 'center'
         }, {
-            field: 'status',
-            title: '状态',
-            align: 'center'
+            field: 'select',
+            title: '查询',
+            align: 'center',
+            formatter: 'commonFormatter'
+        }, {
+            field: 'insert',
+            title: '添加',
+            align: 'center',
+            formatter: 'commonFormatter'
+        }, {
+            field: 'update',
+            title: '修改',
+            align: 'center',
+            formatter: 'commonFormatter'
+        }, {
+            field: 'delete',
+            title: '删除',
+            align: 'center',
+            formatter: 'commonFormatter'
         }]
     });
 }
@@ -170,9 +181,6 @@ function initSchemaTree() {
         ]
     });
 }
-function showAddModal() {
-    $('#addModal').modal();
-}
 function initValidator() {
     // 添加数据源Form前端验证
     $('#addSourceForm').bootstrapValidator({
@@ -258,9 +266,11 @@ function initValidator() {
         }
     });
 }
-/**
- * 授权操作
- */
-function authDBA() {
 
+function commonFormatter(value) {
+    if (value) {
+        return "<a><span class=\"glyphicon glyphicon-ok \" style=\"color:green\"></span></a>";
+    } else {
+        return "<a><span class=\"glyphicon glyphicon-remove\" style=\"color:red\"></span></a>";
+    }
 }

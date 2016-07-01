@@ -25,6 +25,8 @@
 
     <!--Validator-->
     <link rel="stylesheet" href="/static/validator/css/bootstrapValidator.css"/>
+    <!--selector2-->
+    <link href="/static/selector2/css/select2.min.css" rel="stylesheet"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]-->
@@ -49,5 +51,9 @@
 <script src="/static/sbAdmin/js/sb-admin-2.js"></script>
 <!-- Validator -->
 <script type="text/javascript" src="/static/validator/js/bootstrapValidator.js"></script>
+<!-- Selector -->
+<script src="/static/selector2/js/select2.min.js"></script>
+
+<script src="/static/js/master.js"></script>
 </body>
 </html>

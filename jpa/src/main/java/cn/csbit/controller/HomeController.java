@@ -112,8 +112,26 @@ public class HomeController {
     public String login2() {
         return "login";
     }
+
     @RequestMapping(value = "/source", method = RequestMethod.GET)
     public String source() {
         return "source";
     }
+
+    @RequestMapping(value = "/encrypt", method = RequestMethod.GET)
+    public String encrypt() {
+        return "encrypt";
+    }
+
+    @RequestMapping(value = "/auth", method = RequestMethod.GET)
+    public String auth() {
+        return "auth";
+    }
+
+    @RequestMapping(value = "/task", method = RequestMethod.GET)
+    public String task() {
+        return "task";
+    }
+
+
 }

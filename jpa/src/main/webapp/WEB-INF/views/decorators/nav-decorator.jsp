@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="../static/table/css/bootstrap-table.min.css">
     <!-- Tree View-->
     <link rel="stylesheet" href="../static/treeview/css/bootstrap-treeview.min.css">
+    <!--selector2-->
+    <link href="/static/selector2/css/select2.min.css" rel="stylesheet"/>
+    <!--switch-->
+    <link href="../static/switch/css/bootstrap-switch.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]-->
@@ -101,5 +105,11 @@
 <script src="../static/table/js/bootstrap-table-zh-CN.min.js"></script>
 <!--Tree View-->
 <script src="../static/treeview/js/bootstrap-treeview.min.js"></script>
+<!-- Selector -->
+<script src="/static/selector2/js/select2.min.js"></script>
+<!--switch-->
+<script src="../static/switch/js/bootstrap-switch.min.js"></script>
+
+<script src="/static/js/master.js"></script>
 </body>
 </html>
