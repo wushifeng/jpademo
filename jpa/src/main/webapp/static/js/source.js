@@ -3,6 +3,8 @@
  */
 
 function initSourcePage() {
+    // 改变导航栏状态
+    $('#nav-datasource').addClass('active');
     initTable();
     initDetailTable();
     initSchemaTree();

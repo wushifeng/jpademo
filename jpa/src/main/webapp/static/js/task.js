@@ -2,6 +2,8 @@
  * Created by Answer on 16/7/1.
  */
 function initTaskPage() {
+    // 改变导航栏状态
+    $('#nav-task').addClass('active');
     initTable();
 }
 function initTable() {

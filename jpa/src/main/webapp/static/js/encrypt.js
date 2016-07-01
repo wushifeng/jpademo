@@ -2,6 +2,8 @@
  * Created by Answer on 16/7/1.
  */
 function initEncryptPage() {
+    // 改变导航栏状态
+    $('#nav-encrypt').addClass('active');
     initTable();
     initTable2();
     initTree();

@@ -62,11 +62,11 @@
             <a class="navbar-brand" href="#">Brand</a>
         </div>
         <!-- 导航菜单 -->
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="#">数据源 <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">加密解密</a></li>
-            <li><a href="#">任务</a></li>
-            <li><a href="#">授权</a></li>
+        <ul id="nav" class="nav navbar-nav">
+            <li id="nav-datasource"><a href="${ctx}/source">数据源 <span class="sr-only">(current)</span></a></li>
+            <li id="nav-encrypt"><a href="${ctx}/encrypt">加密解密</a></li>
+            <li id="nav-task"><a href="${ctx}/task">任务</a></li>
+            <li id="nav-auth"><a href="${ctx}/auth">授权</a></li>
         </ul>
         <ul class="nav navbar-top-links navbar-right">
             <!-- /.dropdown -->

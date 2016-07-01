@@ -2,6 +2,8 @@
  * Created by Answer on 16/7/1.
  */
 function initAuthPage() {
+    // 改变导航栏状态
+    $('#nav-auth').addClass('active');
     initDataSourceTable();
     initUserTable();
     initSchemaTree();
@@ -14,6 +16,7 @@ function initAuthPage() {
         offText: '停止'
     });
 }
+
 function initDataSourceTable() {
     $('#dataSourceTable').bootstrapTable({
         url: 'data_source_table.json',
