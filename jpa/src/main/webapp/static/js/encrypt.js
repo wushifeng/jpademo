@@ -6,18 +6,19 @@ function initEncryptPage() {
     $('#nav-encrypt').addClass('active');
     initTable();
     initTable2();
-    initTree();
+    initSchemaTree($('#tree2'), $('#table3'));
     initValidator();
 }
 function initTable() {
     $('#table').bootstrapTable({
-        url: 'data_source_table.json',
+        url: '/source/get',
         height: '300',
 //            showRefresh: true,
         pagination: true,
         pageNumber: '1',
-        sidePagination: 'client',
+        sidePagination: 'server',
 //            toolbar: '#toolbar',
+        queryParamsType: 'size',
         singleSelect: true,
         clickToSelect: true,
         columns: [{
@@ -31,7 +32,8 @@ function initTable() {
         }, {
             field: 'type',
             title: '数据类型',
-            align: 'center'
+            align: 'center',
+            formatter: 'cellTypeFormatter'
         }, {
             field: 'ip',
             title: 'IP',
@@ -41,7 +43,7 @@ function initTable() {
             title: '端口',
             align: 'center'
         }, {
-            field: 'schema',
+            field: 'sid',
             title: '实例',
             align: 'center'
         }]
@@ -49,7 +51,7 @@ function initTable() {
 }
 function initTable2() {
     $('#table3').bootstrapTable({
-        url: 'data_source_table.json',
+        //url: 'data_source_table.json',
 //            classes: 'table table-bordered',
         height: '300',
         sidePagination: 'client',
@@ -59,7 +61,7 @@ function initTable2() {
             title: '名称',
             visible: false
         }, {
-            field: 'alias',
+            field: 'column',
             title: '名称',
             align: 'center'
         }, {
@@ -262,11 +264,7 @@ function showEncryptModal() {
         sidePagination: 'client',
 //            toolbar: '#toolbar2',
         columns: [{
-            field: 'id',
-            title: '名称',
-            visible: false
-        }, {
-            field: 'alias',
+            field: 'column',
             title: '名称',
             align: 'center'
         }, {
@@ -277,7 +275,12 @@ function showEncryptModal() {
             field: 'algorithm',
             title: '加密算法',
             align: 'center'
+        }, {
+            field: 'id',
+            title: '',
+            visible: false
         }]
     });
+    initSchemaTree($('#tree'), $('table2'));
     $('#encryptModal').modal();
 }

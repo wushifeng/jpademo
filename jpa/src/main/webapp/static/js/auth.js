@@ -6,7 +6,7 @@ function initAuthPage() {
     $('#nav-auth').addClass('active');
     initDataSourceTable();
     initUserTable();
-    initSchemaTree();
+    initSchemaTree($('#schemaTree'));
     initValidator();
     $("#switch-offText").bootstrapSwitch({
         size: 'mini',
@@ -19,12 +19,13 @@ function initAuthPage() {
 
 function initDataSourceTable() {
     $('#dataSourceTable').bootstrapTable({
-        url: 'data_source_table.json',
+        url: '/source/get',
         height: '300',
 //            showRefresh: true,
         pagination: true,
         pageNumber: '1',
-        sidePagination: 'client',
+        sidePagination: 'server',
+        queryParamsType: 'size',
 //            toolbar: '#toolbar',
         singleSelect: true,
         clickToSelect: true,
@@ -39,7 +40,8 @@ function initDataSourceTable() {
         }, {
             field: 'type',
             title: '数据类型',
-            align: 'center'
+            align: 'center',
+            formatter: 'cellTypeFormatter'
         }, {
             field: 'ip',
             title: 'IP',
@@ -49,7 +51,7 @@ function initDataSourceTable() {
             title: '端口',
             align: 'center'
         }, {
-            field: 'schema',
+            field: 'sid',
             title: '实例',
             align: 'center'
         }]
@@ -97,91 +99,6 @@ function initUserTable() {
             align: 'center',
             formatter: 'commonFormatter'
         }]
-    });
-}
-function initSchemaTree() {
-    $('#schemaTree').treeview({
-        color: "#428bca",
-        nodeIcon: 'glyphicon glyphicon-bookmark',
-        data: [
-            {
-                text: 'Parent 1',
-                href: '#parent1',
-                tags: ['4'],
-                nodes: [
-                    {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    },
-                    {
-                        text: 'Child 2',
-                        href: '#child2',
-                        tags: ['0']
-                    }, {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    }, {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    }, {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
     });
 }
 function initValidator() {
@@ -272,7 +189,7 @@ function initValidator() {
 
 function commonFormatter(value) {
     if (value) {
-        return "<a><span class=\"glyphicon glyphicon-ok \" style=\"color:green\"></span></a>";
+        return "<a><span class=\"glyphicon glyphicon-ok \" style=\"color:black\"></span></a>";
     } else {
         return "<a><span class=\"glyphicon glyphicon-remove\" style=\"color:red\"></span></a>";
     }

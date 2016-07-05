@@ -41,11 +41,11 @@
             <i class="glyphicon glyphicon-plus"></i>
             添加
         </button>
-        <button id="edit" class="btn btn-outline btn-default btn-sm">
+        <button id="edit" onclick="editDataSource()" class="btn btn-outline btn-default btn-sm">
             <i class="glyphicon glyphicon-edit"></i>
             编辑
         </button>
-        <button id="remove" class="btn btn-outline btn-default btn-sm">
+        <button id="remove" onclick="delDataSource()" class="btn btn-outline btn-default btn-sm">
             <i class="glyphicon glyphicon-remove"></i>删除
         </button>
     </div>
@@ -74,11 +74,12 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="text-center text-primary">添加数据源</h4>
+                <h4 id="addModalTitle" class="text-center text-primary">添加数据源</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="addSourceForm">
+                <form class="form-horizontal" id="addSourceForm" method="post">
                     <fieldset>
+                        <input type="hidden" id="id" name="id" value="-1">
                         <div class="form-group">
                             <label for="alias" class="col-sm-3 control-label">名称</label>
                             <div class="col-sm-8">
@@ -108,12 +109,12 @@
                         <div class="form-group">
                             <label for="sid" class="col-sm-3 control-label">缺省SID</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control" id="sid" name="sid">
+                                <input type="text" class="form-control" id="sid" name="sid">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-9 col-sm-2">
-                                <button type="submit" class="btn btn-success btn-block">确定</button>
+                                <button type="submit" onclick="submitAddSource()" class="btn btn-success btn-block">确定</button>
                             </div>
                         </div>
                     </fieldset>

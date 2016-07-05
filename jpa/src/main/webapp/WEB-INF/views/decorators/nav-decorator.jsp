@@ -104,12 +104,15 @@
 <script src="../static/table/js/bootstrap-table.min.js"></script>
 <script src="../static/table/js/bootstrap-table-zh-CN.min.js"></script>
 <!--Tree View-->
-<script src="../static/treeview/js/bootstrap-treeview.min.js"></script>
+<script src="../static/treeview/js/bootstrap-treeview.js"></script>
 <!-- Selector -->
 <script src="/static/selector2/js/select2.min.js"></script>
 <!--switch-->
 <script src="../static/switch/js/bootstrap-switch.min.js"></script>
 
 <script src="/static/js/master.js"></script>
+<script src="/static/js/Global.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/tree.js"></script>
 </body>
 </html>

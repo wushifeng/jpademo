@@ -155,8 +155,6 @@
                 </div>
                 <div class="panel col-lg-8" style="padding-bottom: 30px">
                     <table id="table2"></table>
-                    <!--<h4>-->
-                    <!--</h4>-->
                     <br/>
                     <br/>
                     <br/>

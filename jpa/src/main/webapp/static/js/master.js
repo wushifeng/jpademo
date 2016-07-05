@@ -21,6 +21,7 @@ var master = {
             url: options.url,
             data: options.data,
             type: options.type,
+            async: options.async,
             dataType: 'json',
             beforeSend: function () {
                 options.beforeSend(options.beforeText);

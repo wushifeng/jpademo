@@ -5,37 +5,29 @@
 function initSourcePage() {
     // 改变导航栏状态
     $('#nav-datasource').addClass('active');
-    initTable();
+    initDataSourceTable();
     initDetailTable();
-    initSchemaTree();
+    initSchemaTree($('#schemaTree'), $('#detialTable'));
     initValidator();
     $("#type").select2({
         minimumResultsForSearch: Infinity,
-        data: [
-            {
-                id: 'value',
-                text: 'Text to display'
-            },
-            {
-                id: '2',
-                text: 'orcl'
-            }
-        ]
+        data: Global.DBTypt
     });
 }
-function initTable() {
+function initDataSourceTable() {
     $('#dataSourceTable').bootstrapTable({
-        url: 'data_source_table.json',
+        url: '/source/get',
         height: '300',
         showRefresh: true,
         pagination: true,
         pageNumber: '1',
-        sidePagination: 'client',
+        sidePagination: 'server',
         toolbar: '#dataSourceTableToolbar',
+        queryParamsType: 'size',
         singleSelect: true,
         clickToSelect: true,
         columns: [{
-            field: 'id',
+            field: 'checkbox',
             title: '',
             checkbox: true
         }, {
@@ -45,7 +37,8 @@ function initTable() {
         }, {
             field: 'type',
             title: '数据类型',
-            align: 'center'
+            align: 'center',
+            formatter: 'cellTypeFormatter'
         }, {
             field: 'ip',
             title: 'IP',
@@ -57,13 +50,42 @@ function initTable() {
         }, {
             field: 'status',
             title: '加密状态',
-            align: 'center'
+            align: 'center',
+            formatter: 'cellStatusFormatter'
         }, {
-            field: 'isInterrupt',
+            field: 'interrupt',
             title: '故障中断',
-            align: 'center'
-//                checkbox: true
+            align: 'center',
+            formatter: 'cellInterruptFormatter'
+        }, {
+            field: 'id',
+            title: '',
+            //checkbox: true
+            visible: false
         }]
+        ,
+        onClickCell: function (field, value, row, $element) {
+            console.log(field);
+            console.log(value);
+            console.log(row);
+            console.log($element);
+            if (field == "interrupt") {
+                var interrupt = !value;
+                master.postJSON({
+                    url: "/source/editInterrupt",
+                    data: {
+                        id: row['id'],
+                        interrupt: interrupt
+                    },
+                    complete: function (data) {
+                        //data = JSON.parse(data);
+                        if (data == "success") {
+                            $('#dataSourceTable').bootstrapTable('refresh');
+                        }
+                    }
+                });
+            }
+        }
     });
 }
 function initDetailTable() {
@@ -77,7 +99,7 @@ function initDetailTable() {
             title: '名称',
             visible: false
         }, {
-            field: 'alias',
+            field: 'column',
             title: '名称',
             align: 'center'
         }, {
@@ -87,94 +109,11 @@ function initDetailTable() {
         }]
     });
 }
-function initSchemaTree() {
-    $('#schemaTree').treeview({
-        color: "#428bca",
-        nodeIcon: 'glyphicon glyphicon-bookmark',
-        data: [
-            {
-                text: 'Parent 1',
-                href: '#parent1',
-                tags: ['4'],
-                nodes: [
-                    {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    },
-                    {
-                        text: 'Child 2',
-                        href: '#child2',
-                        tags: ['0']
-                    }, {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    }, {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    }, {
-                        text: 'Child 1',
-                        href: '#child1',
-                        tags: ['2'],
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                                tags: ['0']
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                                tags: ['0']
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    });
-}
+
 function showAddModal() {
     $('#addModal').modal();
 }
+
 function initValidator() {
     // 添加数据源Form前端验证
     $('#addSourceForm').bootstrapValidator({
@@ -221,7 +160,7 @@ function initValidator() {
             type: {
                 validators: {
                     notEmpty: {
-                        message: '缺省SID不能为空'
+                        message: '类型不能为空'
                     }
                 }
             },
@@ -260,6 +199,105 @@ function initValidator() {
         }
     });
 }
+
+/**
+ *  故障中断单元格样式
+ */
+function cellInterruptFormatter(value, row, index) {
+    if (value) {
+        return "<a onclick='changeInterrupt(this)'><i class=\"glyphicon glyphicon-ok\" style=\"color: green;\"></a>";
+    } else {
+        return "<a onclick='changeInterrupt(this)'><i class=\"glyphicon glyphicon-remove\" style=\"color: red;\"></a>";
+    }
+}
+
+function cellStatusFormatter(value, row, index) {
+    if (value) {
+        return "<span style=\"color: green;\">已部署</span>";
+    } else {
+        return "<span style=\"color: red;\">未部署</span>";
+    }
+}
+
+/**
+ *
+ */
+function submitAddSource() {
+    master.postJSON({
+        url: "/source/add",
+        data: $('#addSourceForm').serialize(),
+        complete: function (data) {
+            data = JSON.parse(data);
+            if (data.success == "success") {
+                $('#addModal').modal('hide');
+                $('#dataSourceTable').bootstrapTable('refresh');
+            } else {
+                alert("添加数据源失败");
+            }
+        }
+    })
+}
+
+/**
+ * 点击删除按钮响应事件
+ */
+function delDataSource() {
+    // 获取选中数据源id
+    var id = getSelectedRowId();
+    if (id == false) {
+        return;
+    }
+    master.postJSON({
+        url: "/source/del",
+        data: {
+            id: id,
+        },
+        complete: function () {
+            $('#dataSourceTable').bootstrapTable('refresh');
+        }
+    });
+}
+
+/**
+ * 点击编辑按钮响应事件
+ */
+function editDataSource() {
+    // 获取选中数据源id
+    var id = getSelectedRowId();
+    if (id == false) {
+        return;
+    }
+    master.postJSON({
+        url: "/source/getById",
+        data: {
+            id: id,
+        },
+        complete: function (data) {
+            data = JSON.parse(data);
+            $('#alias').val(data['alias']);
+            $('#ip').val(data['ip']);
+            $('#port').val(data['port']);
+            $('#type').val(data['type']).trigger("change");
+            $('#sid').val(data['sid']);
+            $('#id').val(data['id']);
+            $('#addModal').modal();
+        }
+    });
+}
+
+/**
+ * 获取选中行的id,没选中返回false并提示
+ * @returns {*}
+ */
+function getSelectedRowId() {
+    var selectedRows = $('#dataSourceTable').bootstrapTable('getSelections');
+    if (selectedRows.length == 0) {
+        alert("请选择一项");
+        return false;
+    }
+    return selectedRows[0]['id'];
+}
+
 /**
  * 授权操作
  */
