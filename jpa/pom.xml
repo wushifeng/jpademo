@@ -112,6 +112,11 @@
             <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>0.20.0.RELEASE</version>
+        </dependency>
         <!-- hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -145,13 +150,13 @@
             <groupId>javax.servlet.jsp.jstl</groupId>
             <artifactId>jstl-api</artifactId>
             <version>1.2</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <!-- servlet-api -->
         <dependency>
@@ -178,6 +183,23 @@
             <artifactId>h2</artifactId>
             <version>1.4.192</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- Sitemesh 布局 -->
+        <!-- https://mvnrepository.com/artifact/org.sitemesh/sitemesh -->
+        <dependency>
+            <groupId>org.sitemesh</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.7.2</version>
         </dependency>
     </dependencies>
 
@@ -242,11 +264,21 @@
                 </configuration>
             </plugin>
             <!--单元测试报告 http://www.blogjava.net/qileilove/archive/2014/06/12/414651.html -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.19</version>
-            </plugin>
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-surefire-report-plugin</artifactId>-->
+            <!--<version>2.19</version>-->
+            <!--<configuration>-->
+            <!--<reportSets>-->
+            <!--<reportSet>-->
+            <!--<id>test</id>-->
+            <!--<reports>-->
+            <!--<report>report-only</report>-->
+            <!--</reports>-->
+            <!--</reportSet>-->
+            <!--</reportSets>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
             <!--  编译的告警 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -264,9 +296,9 @@
         </plugins>
     </build>
 
-     <!-- http://stackoverflow.com/questions/25420745/how-to-set-spring-active-profiles-with-maven-profiles
-     好多资料写的不对
-     mvn jetty:run -Dspring.profiles.active=production -->
+    <!-- http://stackoverflow.com/questions/25420745/how-to-set-spring-active-profiles-with-maven-profiles
+    好多资料写的不对
+    mvn jetty:run -Dspring.profiles.active=production -->
     <profiles>
         <profile>
             <id>production</id>
@@ -281,10 +313,10 @@
         <profile>
             <id>test</id>
             <activation>
-            <property>
-                <name>spring.profiles.active</name>
-                <value>test</value>
-            </property>
+                <property>
+                    <name>spring.profiles.active</name>
+                    <value>test</value>
+                </property>
             </activation>
             <!-- mvn test 找不对呢 总是使用 mysql-->
             <dependencies>

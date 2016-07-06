@@ -1,110 +1,132 @@
 package cn.csbit.controller;
 
-import cn.csbit.form.PersonForm;
-import cn.csbit.service.OrderService;
-import cn.csbit.model.Order;
-import cn.csbit.model.OrderItem;
-import cn.csbit.model.User;
+import cn.csbit.common.Global;
+import cn.csbit.common.PageUtil;
+import cn.csbit.model.ColumnDetail;
+import cn.csbit.model.DataSource;
+import cn.csbit.repository.DataSourceDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import cn.csbit.repository.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by wushifeng on 2016/6/27.
+ * Created by Answer on 16/7/1.
  */
 @Controller
 public class HomeController {
+
     @Autowired
-    UserDao dao;
+    DataSourceDao dataSourceDao;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String login() {
-        User u = new User();
-        u.setName("hello");
-
-        dao.save(u);
-
-        u = dao.findOne(1);
-        if (u == null)
-            assert (true);
-
-        List<User> ls = dao.findByName("hello");
-        if (ls == null)
-            assert (true);
-
-        dao.delete(ls);
-        return "index";
+    @RequestMapping(value = "/{path}", method = RequestMethod.GET)
+    public String index(@PathVariable("path") String path) {
+        return path;
     }
 
-    @Autowired
-    OrderDao ord;
-    @Autowired
-    OrderItemDao ordItem;
-    @Autowired
-    OrderService svc;
-
-    @RequestMapping(value = "/o", method = RequestMethod.GET)
-    public String order() {
-        this.ord.deleteAll();
-
-        Order order = new Order();
-        order.setAmount(34f);
-        order.getItems().add(new OrderItem(order, 20f));
-        order.getItems().add(new OrderItem(order, 25f));
-
-        this.ord.save(order);
-
-        //Transaction close 在controllerc层处理关系就不对了
-//            List<Order> ls = this.ord.findByAmount(34f);
-//            assert(ls.size() > 0);
-//            for(Order o : ls){
-//                o.setItems(ordItem.findByOrder(o));
-//
-//                System.out.println(o.getItems().size());
-//            }
-        this.svc.getLazy(order);
-
-        Integer id = order.getId();
-        order = new Order();
-        order.setId(id);
-
-        List<OrderItem> ls = this.ordItem.findByOrder(order);
-        System.out.println(ls.size());
-
-        return "index";
-    }
-
-    @RequestMapping(value = "/newadd", method = RequestMethod.GET)
-    public ModelAndView newadd(Long typeId, Model model) throws Exception {
-        PersonForm person = new PersonForm();
-
-        model.addAttribute(person);
-        System.out.println("sss");
-        return new ModelAndView("/user/personAdd", model.asMap());
-    }
-
-    @RequestMapping(value = "/savePerson")
-    public ModelAndView savePerson(@Valid PersonForm person,
-                                   BindingResult bindingResult) {
-        Model model = new ExtendedModelMap();
-        model.addAttribute(person);
-
+    @RequestMapping(value = "/source/add", method = RequestMethod.POST)
+    @ResponseBody
+    public String addDataSource(@Valid DataSource dataSource, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute(person);
-            return new ModelAndView("/user/personAdd", model.asMap());
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            for (ObjectError error : errors) {
+//                Log.e(error);
+                System.out.println(error);
+            }
+            return Global.RESULT.ERROR;
         } else {
-            person = new PersonForm();
-            model.addAttribute(person);
-            return new ModelAndView("/user/personAdd", model.asMap());
+            dataSourceDao.save(dataSource);
+            return Global.RESULT.SUCCESS;
         }
     }
+
+    @RequestMapping(value = "/source/get", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getDataSource(@RequestParam(value = "pageSize") Integer pageSize,
+                                @RequestParam(value = "pageNumber") Integer pageNumber,
+                                @RequestParam(value = "sortOrder") String sortOrder) {
+        Page<DataSource> page = dataSourceDao.findAll(new PageRequest(pageNumber - 1, pageSize));
+        return PageUtil.PageToMap(page);
+    }
+
+    @RequestMapping(value = "/source/getById", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getDataSourceById(@RequestParam(value = "id") Integer id) {
+        DataSource dataSource = dataSourceDao.findOne(id);
+        return dataSource;
+    }
+
+    @RequestMapping(value = "/source/del", method = RequestMethod.POST)
+    @ResponseBody
+    public String delDataSource(@RequestParam(value = "id") Integer id) {
+        this.dataSourceDao.delete(id);
+        return Global.RESULT.SUCCESS;
+    }
+
+
+    @RequestMapping(value = "/source/editInterrupt", method = RequestMethod.POST)
+    @ResponseBody
+    public String editInterrupt(@RequestParam(value = "id") Integer id, @RequestParam(value = "interrupt") Boolean interrupt) {
+        DataSource dataSource = this.dataSourceDao.findOne(id);
+        dataSource.setInterrupt(interrupt);
+        this.dataSourceDao.save(dataSource);
+        return Global.RESULT.SUCCESS;
+    }
+
+    /**
+     * 获取Oracle数据库Schema名称列表
+     * 安全域树形结构的父节点
+     */
+    @RequestMapping(value = "/schema/get")
+    @ResponseBody
+    public Object getSchema() {
+        List<String> parents = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            String parent = "parent" + i;
+            parents.add(parent);
+        }
+        return parents;
+    }
+
+    /**
+     * 通过Oracle数据库的Schema获取所有表
+     * 通过安全域父节点获取子节点
+     *
+     * @param schema
+     * @return
+     */
+    @RequestMapping(value = "/schema/getChild")
+    @ResponseBody
+    public Object getChild(@RequestParam(value = "schema") String schema) {
+        List<String> children = new ArrayList<>();
+        int lent = 3;//(int) Math.random();
+        for (int i = 0; i < lent; i++) {
+            String child = schema + "-Child";
+            children.add(child);
+        }
+        return children;
+    }
+
+    @RequestMapping(value = "/schema/getChildDetail")
+    @ResponseBody
+    public Object getChildDetail(@RequestParam(value = "schema") String schema, @RequestParam(value = "table") String table) {
+        List<ColumnDetail> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            ColumnDetail columnDetail = new ColumnDetail();
+            columnDetail.setAlgorithm(1);
+            columnDetail.setColumn("Column" + i);
+            columnDetail.setStatus(false);
+            list.add(columnDetail);
+        }
+        return list;
+    }
+
+
 }

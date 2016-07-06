@@ -21,4 +21,9 @@ public class Global {
         // 初始以达梦7为开发对象，后来发现7和6是不兼容的升级，jdbc无法共用，因此添加达梦6
         byte DAMENG6 = 13;
     }
+
+    public interface RESULT {
+        String SUCCESS = "success";
+        String ERROR = "error";
+    }
 }
