@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite thread-count="10" parallel="tests" verbose="10" name="demo" annotations="JDK" time-out="1800000">
+
+	<test name="TestNg" junit="false" annotations="JDK">
+		<classes>
+			<class name="cn.csbit.NoCertPage"></class>
+			<class name="cn.csbit.LogManagePage"></class>
+		</classes>
+	</test>
+</suite>

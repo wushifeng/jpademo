@@ -2,7 +2,7 @@
 
 	<test name="TestNg" junit="false" annotations="JDK">
 		<classes>
-			<class name="cn.csbit.TestHome" />
+			<class name="cn.csbit.UserManagePage" />
 		</classes>
 	</test>
 </suite>
