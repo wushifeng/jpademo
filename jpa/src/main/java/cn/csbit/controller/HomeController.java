@@ -26,11 +26,6 @@ public class HomeController {
     @Autowired
     DataSourceDao dataSourceDao;
 
-    @RequestMapping(value = "/{path}", method = RequestMethod.GET)
-    public String index(@PathVariable("path") String path) {
-        return path;
-    }
-
     @RequestMapping(value = "/source/add", method = RequestMethod.POST)
     @ResponseBody
     public String addDataSource(@Valid DataSource dataSource, BindingResult bindingResult) {
