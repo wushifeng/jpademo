@@ -26,7 +26,7 @@ public class HomeController {
     @Autowired
     DataSourceDao dataSourceDao;
 
-    @RequestMapping(value = "/{path}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{path}", method = {RequestMethod.GET, RequestMethod.POST})
     public String index(@PathVariable("path") String path) {
         return path;
     }
@@ -128,5 +128,10 @@ public class HomeController {
         return list;
     }
 
+    @RequestMapping(value = "/encrypt/addEncryptTask")
+    @ResponseBody
+    public String addEncryptTask(@RequestParam(value = "schema") String schema, @RequestParam(value = "table") String table) {
+        return "";
+    }
 
 }

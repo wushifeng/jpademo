@@ -31,12 +31,12 @@ public class OrderItem extends BaseModel {
     @Column(nullable = false)
     private Float sellPrice = 0f;
     // optional=true：可选，表示此对象可以没有，可以为null；false表示必须存在
-    @ManyToOne(cascade = { CascadeType.REMOVE, CascadeType.MERGE }, optional = false)
+    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.MERGE}, optional = false)
     @JoinColumn(name = "order_id")
     private Order order;
 
     //级联删除时必须要的构造
-    public OrderItem(){
+    public OrderItem() {
     }
 
     public OrderItem(Order order, Float sellPrice) {
