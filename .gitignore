@@ -23,3 +23,5 @@ hs_err_pid*
 
 #build artifacts
 out/
+#office word的打开临时文件
+~*.doc*
