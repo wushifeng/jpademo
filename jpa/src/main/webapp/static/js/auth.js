@@ -4,7 +4,7 @@
 function initAuthPage() {
     // 改变导航栏状态
     $('#nav-auth').addClass('active');
-    initDataSourceTable();
+    initShowDataSourceTable($('#dataSourceTable'));
     initUserTable();
     initSchemaTree($('#schemaTree'));
     initValidator();
@@ -14,47 +14,6 @@ function initAuthPage() {
         offColor: 'danger',
         onText: '启用',
         offText: '停止'
-    });
-}
-
-function initDataSourceTable() {
-    $('#dataSourceTable').bootstrapTable({
-        url: '/source/get',
-        height: '300',
-//            showRefresh: true,
-        pagination: true,
-        pageNumber: '1',
-        sidePagination: 'server',
-        queryParamsType: 'size',
-//            toolbar: '#toolbar',
-        singleSelect: true,
-        clickToSelect: true,
-        columns: [{
-            field: 'id',
-            title: '',
-            checkbox: true
-        }, {
-            field: 'alias',
-            title: '名称',
-            align: 'center'
-        }, {
-            field: 'type',
-            title: '数据类型',
-            align: 'center',
-            formatter: 'cellTypeFormatter'
-        }, {
-            field: 'ip',
-            title: 'IP',
-            align: 'center'
-        }, {
-            field: 'port',
-            title: '端口',
-            align: 'center'
-        }, {
-            field: 'sid',
-            title: '实例',
-            align: 'center'
-        }]
     });
 }
 

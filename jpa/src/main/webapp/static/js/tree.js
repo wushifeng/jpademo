@@ -65,18 +65,7 @@ function getTreeChildren(tree, parent) {
 }
 
 function getTreeChildDetail(schema, table, targetTable) {
-    //master.postJSON({
-    //    url: '/schema/getChildDetail',
-    //    data: {
-    //        schema: schema,
-    //        table: table
-    //    },
-    //    complete: function (data) {
-    //
-    //    }
-    //});
     targetTable.bootstrapTable('refresh', {
         url: '/schema/getChildDetail?schema=' + schema + '&table=' + table
     });
-    //targetTable.bootstrapTable('refresh')
 }

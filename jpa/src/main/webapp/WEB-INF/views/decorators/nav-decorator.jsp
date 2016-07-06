@@ -114,5 +114,6 @@
 <script src="/static/js/Global.js"></script>
 <script src="/static/js/common.js"></script>
 <script src="/static/js/tree.js"></script>
+<script src="/static/js/table.js"></script>
 </body>
 </html>

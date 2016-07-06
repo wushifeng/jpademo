@@ -5,8 +5,9 @@
 function initSourcePage() {
     // 改变导航栏状态
     $('#nav-datasource').addClass('active');
-    initDataSourceTable();
-    initDetailTable();
+    initEditDataSourceTable($('#dataSourceTable'));
+    //initDetailTable();
+    initEncryptTable($('#detialTable'), false);
     initSchemaTree($('#schemaTree'), $('#detialTable'));
     initValidator();
     $("#type").select2({
@@ -14,106 +15,16 @@ function initSourcePage() {
         data: Global.DBTypt
     });
 }
-function initDataSourceTable() {
-    $('#dataSourceTable').bootstrapTable({
-        url: '/source/get',
-        height: '300',
-        showRefresh: true,
-        pagination: true,
-        pageNumber: '1',
-        sidePagination: 'server',
-        toolbar: '#dataSourceTableToolbar',
-        queryParamsType: 'size',
-        singleSelect: true,
-        clickToSelect: true,
-        columns: [{
-            field: 'checkbox',
-            title: '',
-            checkbox: true
-        }, {
-            field: 'alias',
-            title: '名称',
-            align: 'center'
-        }, {
-            field: 'type',
-            title: '数据类型',
-            align: 'center',
-            formatter: 'cellTypeFormatter'
-        }, {
-            field: 'ip',
-            title: 'IP',
-            align: 'center'
-        }, {
-            field: 'port',
-            title: '端口',
-            align: 'center'
-        }, {
-            field: 'status',
-            title: '加密状态',
-            align: 'center',
-            formatter: 'cellStatusFormatter'
-        }, {
-            field: 'interrupt',
-            title: '故障中断',
-            align: 'center',
-            formatter: 'cellInterruptFormatter'
-        }, {
-            field: 'id',
-            title: '',
-            //checkbox: true
-            visible: false
-        }]
-        ,
-        onClickCell: function (field, value, row, $element) {
-            console.log(field);
-            console.log(value);
-            console.log(row);
-            console.log($element);
-            if (field == "interrupt") {
-                var interrupt = !value;
-                master.postJSON({
-                    url: "/source/editInterrupt",
-                    data: {
-                        id: row['id'],
-                        interrupt: interrupt
-                    },
-                    complete: function (data) {
-                        //data = JSON.parse(data);
-                        if (data == "success") {
-                            $('#dataSourceTable').bootstrapTable('refresh');
-                        }
-                    }
-                });
-            }
-        }
-    });
-}
-function initDetailTable() {
-    $('#detialTable').bootstrapTable({
-        url: 'data_source_table.json',
-//            classes: 'table table-bordered',
-        height: '300',
-        sidePagination: 'client',
-        columns: [{
-            field: 'id',
-            title: '名称',
-            visible: false
-        }, {
-            field: 'column',
-            title: '名称',
-            align: 'center'
-        }, {
-            field: 'status',
-            title: '状态',
-            align: 'center'
-        }]
-    });
-}
 
 function showAddModal() {
+    // 修改模态框标题
+    $('#addModalTitle').text("添加数据源")
     $('#addModal').modal();
 }
 
+/**
+ * 前端验证
+ */
 function initValidator() {
     // 添加数据源Form前端验证
     $('#addSourceForm').bootstrapValidator({
@@ -200,27 +111,9 @@ function initValidator() {
     });
 }
 
-/**
- *  故障中断单元格样式
- */
-function cellInterruptFormatter(value, row, index) {
-    if (value) {
-        return "<a onclick='changeInterrupt(this)'><i class=\"glyphicon glyphicon-ok\" style=\"color: green;\"></a>";
-    } else {
-        return "<a onclick='changeInterrupt(this)'><i class=\"glyphicon glyphicon-remove\" style=\"color: red;\"></a>";
-    }
-}
-
-function cellStatusFormatter(value, row, index) {
-    if (value) {
-        return "<span style=\"color: green;\">已部署</span>";
-    } else {
-        return "<span style=\"color: red;\">未部署</span>";
-    }
-}
 
 /**
- *
+ * 提交添加数据源响应事件
  */
 function submitAddSource() {
     master.postJSON({
@@ -280,6 +173,9 @@ function editDataSource() {
             $('#type').val(data['type']).trigger("change");
             $('#sid').val(data['sid']);
             $('#id').val(data['id']);
+
+            // 修改模态框标题
+            $('#addModalTitle').text("编辑数据源");
             $('#addModal').modal();
         }
     });

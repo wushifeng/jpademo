@@ -22,8 +22,27 @@ public class Global {
         byte DAMENG6 = 13;
     }
 
+    /**
+     * Controller 返回结果
+     */
     public interface RESULT {
         String SUCCESS = "success";
         String ERROR = "error";
+    }
+
+    /**
+     * 加密解密任务执行状态
+     */
+    public interface TaskStatus {
+        byte STOP = 0;
+        byte RUNNING = 1;
+    }
+
+    /**
+     * 加密算法
+     */
+    public interface EncryptAlgorithm {
+        byte AES = 0;
+        byte DES = 1;
     }
 }

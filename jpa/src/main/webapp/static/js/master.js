@@ -5,10 +5,10 @@ var master = {
         errorText: "操作过程出错,此次操作无效!",
         data: {},
         beforeSend: function (text) {
-            alert("beforeSend:" + text);
+            //alert("beforeSend:" + text);
         },
         afterComplete: function () {
-            alert("close");
+            //alert("close");
         }
     },
     _ajax: function (data) {
